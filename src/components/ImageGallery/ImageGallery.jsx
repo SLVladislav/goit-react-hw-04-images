@@ -14,16 +14,18 @@ const Status = {
   REJECTED: 'rejected',
 };
 
-export default function ImageGallery({ imgTheme }) {
+export  function ImageGallery({ imgTheme }) {
   const [images, setImages] = useState([]);
-  const [error, setError] = useState('');
+  const [error, setError] = useState(null);
   const [status, setStatus] = useState(Status.IDLE);
   const [page, setPage] = useState(1);
   const [totalHits, setTotalHits] = useState(0);
   const [search, setSearch] = useState('');
 
   useEffect(() => {
-    if (!imgTheme) return;
+    if (!imgTheme) {
+      return;
+    }
 
     setSearch(imgTheme);
     setImages([]);
@@ -31,7 +33,9 @@ export default function ImageGallery({ imgTheme }) {
   }, [imgTheme]);
 
   useEffect(() => {
-    if (!search) return;
+    if (!search) {
+      return;
+    }
 
     async function loadImg() {
       setStatus(Status.PENDING);
@@ -51,7 +55,7 @@ export default function ImageGallery({ imgTheme }) {
         );
 
         setImages(prevState => [...prevState, ...normalizedImages]);
-        setError('');
+        setError(null);
         setStatus(Status.RESOLVED);
         setTotalHits(totalHits);
       } catch (error) {

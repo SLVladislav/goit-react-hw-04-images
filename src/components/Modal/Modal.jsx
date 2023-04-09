@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { createPortal } from 'react-dom';
+import PropTypes from 'prop-types';
 import { Overlay, ModalWindow } from './Modal.styled';
 
 const modalRoot = document.querySelector('#modal-root');
@@ -12,7 +12,9 @@ export function Modal({ img, alt, onClose }) {
         onClose();
       }
     };
+
     window.addEventListener('keydown', handleKeyDown);
+
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [onClose]);
 

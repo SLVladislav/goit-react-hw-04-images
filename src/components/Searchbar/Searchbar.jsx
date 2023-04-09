@@ -7,8 +7,8 @@ import { Header, Form, SearchButton, Input } from './Searchbar.styled';
 export function Searchbar({ onSubmit }) {
   const [input, setInput] = useState('');
 
-  const handleChange = e => {
-    setInput(e.currentTarget.value.toLowerCase());
+  const handleChange = ({ currentTarget }) => {
+    setInput(currentTarget.value.toLowerCase());
   };
 
   const handleSubmit = e => {
