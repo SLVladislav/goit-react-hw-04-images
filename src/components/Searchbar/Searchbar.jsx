@@ -16,7 +16,7 @@ export function Searchbar({ onSubmit }) {
 
     onSubmit(input);
 
-    setInput(input);
+    setInput('');
   };
 
   return (
