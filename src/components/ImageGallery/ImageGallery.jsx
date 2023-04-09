@@ -15,40 +15,12 @@ const Status = {
 };
 
 export default function ImageGallery({ imgTheme }) {
-  // state = {
-  //   images: [],
-  //   error: null,
-  //   status: Status.IDLE,
-  //   page: null,
-  //   totalHits: null,
-  // };
-
   const [images, setImages] = useState([]);
   const [error, setError] = useState('');
   const [status, setStatus] = useState(Status.IDLE);
   const [page, setPage] = useState(1);
   const [totalHits, setTotalHits] = useState(0);
   const [search, setSearch] = useState('');
-
-  // async componentDidUpdate(prevProps, prevState) {
-  //   if (
-  //     this.state.status === Status.RESOLVED &&
-  //     this.state.images.length === this.state.totalHits &&
-  //     prevState.images.length !== this.state.totalHits
-  //   ) {
-  //     toast.warn('Sorry, there are no images matching your search query.');
-  //   }
-  //   const { imgTheme } = this.props;
-
-  //   if (imgTheme && prevProps.imgTheme !== imgTheme) {
-  //     await this.setState({
-  //       images: [],
-  //       page: 1,
-  //     });
-
-  //     await this.loadImg();
-  //   }
-  // }
 
   useEffect(() => {
     if (!imgTheme) return;
@@ -65,7 +37,7 @@ export default function ImageGallery({ imgTheme }) {
       setStatus(Status.PENDING);
 
       try {
-        const { hits, totalHits } = await fetchImg(imgTheme, page);
+        const { hits, totalHits } = await fetchImg(search, page);
 
         const normalizedImages = hits.map(
           ({ id, webformatURL, largeImageURL, tags }) => {
@@ -91,13 +63,9 @@ export default function ImageGallery({ imgTheme }) {
   }, [search, page]);
 
   useEffect(() => {
-    if (
-      status === Status.RESOLVED &&
-      images.length === totalHits &&
-      images.length !== totalHits
-    ) {
-      toast.warn('Sorry, there are no images matching your search query.');
-    }
+    if (totalHits <= 0 || images.length !== totalHits) return;
+
+    toast.warn('Sorry, there are no images matching your search query.');
   }, [images.length, totalHits]);
 
   return (
@@ -118,13 +86,13 @@ export default function ImageGallery({ imgTheme }) {
         </ButtonLoadMore>
       )}
       {status === Status.PENDING && <Loader />}
-      {status === Status.REJECTED && (
+      {status === Status.REJECTED && error && (
         <h2>
           An error occurred, we could not upload the photo, please try reloading
           the page and try again :)
         </h2>
       )}
-      {images.length === 0 && status === Status.RESOLVED && (
+      {images.length === 0 && status === Status.RESOLVED && totalHits === 0 && (
         <h2>We didn't find anything according to your request</h2>
       )}
     </>

@@ -8,7 +8,7 @@ import { ToastContainer } from 'react-toastify';
 export default function App() {
   const [imgTheme, setImgTheme] = useState('');
 
-  const handleFormSubmit = imgTheme => {
+  const handleFormSubmit = imgTheme => {    
     setImgTheme(imgTheme);
   };
 
